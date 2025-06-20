@@ -1,0 +1,27 @@
+{
+  "name": "book-management",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/body-parser": "^1.19.6",
+    "@types/express": "^5.0.3",
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/chalk": "^0.4.31",
+    "@types/dotenv": "^6.1.1",
+    "@types/morgan": "^1.9.10",
+    "chalk": "^5.4.1",
+    "dotenv": "^16.5.0",
+    "morgan": "^1.10.0"
+  }
+}
