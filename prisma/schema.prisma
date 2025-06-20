@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model user{
+  id   String  @id @default(auto()) @map("_id") @db.ObjectId
+  name String 
+  email String  @unique
+  password String 
+  borrowBooks  borrow[]
+   notif notifiaction[]
+}
+model book {
+  bookID String  @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  description String
+  author String
+  publicationDate Int
+  ISBN String
+  borrowBooks  borrow[]
+   notif notifiaction[]
+} 
+model  borrow{
+  borrowID String  @id @default(auto()) @map("_id") @db.ObjectId
+  bookId String @db.ObjectId
+  userID String @db.ObjectId
+  users user @relation(references: [ id ] ,fields: [userID])
+  bo book @relation(references: [bookID] ,fields: [bookId])
+
+  borrowedDate DateTime
+  returnedDate DateTime
+}
+model notifiaction {
+   notiID String  @id @default(auto()) @map("_id") @db.ObjectId
+   bookId String @db.ObjectId
+  userID String @db.ObjectId
+ users user @relation(references: [ id ] ,fields: [userID])
+  bo book @relation(references: [bookID] ,fields: [bookId])
+  message String 
+}
