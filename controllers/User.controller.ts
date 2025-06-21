@@ -3,9 +3,18 @@ import { PrismaClient } from "../generated/prisma";
 import { user } from "../generated/prisma";
 import bcrypt from "bcrypt";
 const client = new PrismaClient();
+// const emailChrck = (email: string) => {
+//   const path = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+//   if (email.match(path)) {
+//     console.log()
+//   }
+// };
 const UserController = {
   creatUser: async (req: Request, res: Response) => {
-    const { name, email, password }: user = req.body;
+    let { name, email, password }: user = req.body;
+    const saltRounds = 10;
+    const hash = await bcrypt.hash(password, saltRounds);
+    password = `${hash}`;
     try {
       if (!name || !email || !password) {
         res.status(400).send("provide all the fields");
@@ -22,7 +31,36 @@ const UserController = {
           data: user,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      res.status(400).json({
+        error: error,
+      });
+    }
+  },
+  updateUser: async (req: Request, res: Response) => {
+    let { name, email, password }: user = req.body;
+    const { id } = req.params;
+    try {
+      const hash = await bcrypt.hash(password, 10);
+      password = `${hash}`;
+      await client.user.update({
+        where: {
+          id,
+        },
+        data: {
+          name,
+          email,
+          password,
+        },
+      });
+      res.status(200).json({
+        msg: "user updated successfully",
+      });
+    } catch (error) {
+      res.status(400).json({
+        error: error,
+      });
+    }
   },
 };
 export default UserController;
