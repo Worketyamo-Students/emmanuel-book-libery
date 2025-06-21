@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PrismaClient } from "../generated/prisma";
 import { user } from "../generated/prisma";
 import bcrypt from "bcrypt";
+import { error } from "console";
 const client = new PrismaClient();
 // const emailChrck = (email: string) => {
 //   const path = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -60,6 +61,29 @@ const UserController = {
       res.status(400).json({
         error: error,
       });
+    }
+  },
+  getUserProfile: async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      if (!id) res.status(400).json({ error: "provide id" });
+      const user = await client.user.findUnique({
+        where: {
+          id,
+        },
+      });
+      if (!user) {
+        res.status(400).json({
+          error: "user not found",
+        });
+      } else {
+        res.status(200).json({
+          msg: "get user",
+          data: user,
+        });
+      }
+    } catch (error) {
+      res.status(400).json({ error: error });
     }
   },
 };
