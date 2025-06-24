@@ -14,12 +14,12 @@ const bookController = {
     }
   },
   createBook: async (req: Request, res: Response) => {
+    let { title, description, author, publicationDate, ISBN }: book = req.body;
     try {
-      const { title, description, author, publicationDate, ISBN }: book =
-        req.body;
       if (!title || !description || !author || !publicationDate || !ISBN) {
         res.status(400).json({ msg: "provide all the fields" });
       }
+      publicationDate = parseInt(`${publicationDate}`);
       const books = await client.book.create({
         data: {
           title,

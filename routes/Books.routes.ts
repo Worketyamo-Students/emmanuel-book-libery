@@ -3,5 +3,6 @@ import bookController from "../controllers/Book.controller";
 const bookEndpoints = Router();
 
 bookEndpoints.get("/", bookController.getAllBook);
+bookEndpoints.post("/", bookController.createBook);
 
 export default bookEndpoints;
