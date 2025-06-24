@@ -1,2 +1,4 @@
 
-/generated/prisma
+/generated
+node_module
+.env
