@@ -35,11 +35,8 @@ const bookController = {
     }
   },
   updateBook: async (req: Request, res: Response) => {
-    const { id } = req.params;
     let { title, description, author, publicationDate, ISBN }: book = req.body;
-    if (!id) {
-      res.status(400).json({ msg: "provide id" });
-    }
+    const { id } = req.params;
     try {
       const update = await client.book.update({
         where: {
@@ -57,6 +54,19 @@ const bookController = {
       res.status(200).json({ msg: "user updated " });
     } catch (error) {
       res.status(500).json({ msg: "Internal error " });
+    }
+  },
+  deleteBook: async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+      await client.book.delete({
+        where: {
+          bookID: id,
+        },
+      });
+      res.status(200).json({ msg: "book delted" });
+    } catch (error) {
+      res.status(500).json({ msg: "intrernal error " });
     }
   },
 };

@@ -4,6 +4,7 @@ const bookEndpoints = Router();
 
 bookEndpoints.get("/", bookController.getAllBook);
 bookEndpoints.post("/", bookController.createBook);
-bookEndpoints.post("/:id", bookController.updateBook);
+bookEndpoints.put("/:id", bookController.updateBook);
+bookEndpoints.delete("/:id", bookController.deleteBook);
 
 export default bookEndpoints;
