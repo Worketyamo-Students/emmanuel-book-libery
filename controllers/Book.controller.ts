@@ -34,5 +34,30 @@ const bookController = {
       res.status(500).json({ msg: "internal error " });
     }
   },
+  updateBook: async (req: Request, res: Response) => {
+    const { id } = req.params;
+    let { title, description, author, publicationDate, ISBN }: book = req.body;
+    if (!id) {
+      res.status(400).json({ msg: "provide id" });
+    }
+    try {
+      const update = await client.book.update({
+        where: {
+          bookID: id,
+        },
+        data: {
+          title,
+          description,
+          author,
+          publicationDate,
+          ISBN,
+        },
+      });
+      if (!update) res.status(404).json({ msg: "user not found" });
+      res.status(200).json({ msg: "user updated " });
+    } catch (error) {
+      res.status(500).json({ msg: "Internal error " });
+    }
+  },
 };
 export default bookController;
